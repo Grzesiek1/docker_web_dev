@@ -72,5 +72,8 @@ RUN a2ensite example.conf \
 && a2ensite example7.conf
 
 COPY ./usr /usr
+#symfony cli
+RUN wget https://get.symfony.com/cli/installer -O - | bash
+RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 RUN /etc/init.d/apache2 restart
