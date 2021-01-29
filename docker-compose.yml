@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+
+  apache:
+    container_name: 'apache'
+    build:
+      context: ./apache
+    volumes:
+      - ${PROJECT_ROOT}:/var/www/html
+    ports:
+      - 80:80
+    extra_hosts:
+      - "example.local:127.0.0.1"
+      - "example1.local:127.0.0.1"
+      - "example2.local:127.0.0.1"
+      - "example3.local:127.0.0.1"
+      - "example4.local:127.0.0.1"
+      - "example5.local:127.0.0.1"
+      - "example6.local:127.0.0.1"
+      - "example7.local:127.0.0.1"
+    networks:
+      app_net:
+        ipv4_address: 192.168.2.23
+        ipv6_address: 2001:3984:3989::10
+    restart: always
+
+  mysql:
+    image: mysql:${MYSQL_VERSION:-latest}
+    ports:
+      - "3306:3306"
+    volumes:
+      - /var/lib/mysql_docker:/var/lib/mysql
+    networks:
+      app_net:
+        ipv4_address: 192.168.2.5
+        ipv6_address: 2001:3984:3989::11
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    container_name: mysql
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    extra_hosts:
+      - "phpmyadmin.local:127.0.0.1"
+    environment:
+      PMA_HOST: 192.168.2.5
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+    container_name:
+      phpmyadmin
+    networks:
+      app_net:
+        ipv4_address: 192.168.2.6
+        ipv6_address: 2001:3984:3989::12
+    restart: always
+
+networks:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.2.0/24"
+        - subnet: "2001:3984:3989::/64"
