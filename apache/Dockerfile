@@ -1,4 +1,4 @@
-FROM php:7.4-apache-buster
+FROM php:8-apache-buster
 
 RUN apt-get update && apt-get install -y vim git zip unzip libpq-dev libxml2-dev wget libmcrypt-dev mc imagemagick
 RUN apt-get install -y libwebp-dev libjpeg62-turbo-dev libpng-dev libxpm-dev \
