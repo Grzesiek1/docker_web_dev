@@ -69,7 +69,8 @@ RUN a2ensite example.conf \
 && a2ensite example4.conf \
 && a2ensite example5.conf \
 && a2ensite example6.conf \
-&& a2ensite example7.conf
+&& a2ensite example7.conf \
+&& a2ensite symfony.conf
 
 COPY ./usr /usr
 #symfony cli
